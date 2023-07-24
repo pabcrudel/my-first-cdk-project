@@ -9,7 +9,7 @@ import { Construct } from 'constructs';
 // Project name
 const mainName = "my-first-cdk-project";
 
-export class web extends Construct {
+export class website extends Construct {
     constructor(scope: Construct, id: string) {
         super(scope, id)
 
@@ -48,7 +48,7 @@ export class web extends Construct {
         })
 
         /** This function deploys the built files from the frontend to the s3 hosting the website */
-        const webdeploy = new s3deploy.BucketDeployment(this, `${mainName}-deploy`, {
+        new s3deploy.BucketDeployment(this, `${mainName}-deploy`, {
             sources: [
                 s3deploy.Source.asset('./www'),
             ],
