@@ -11,10 +11,11 @@ export class MyWebsite extends cdk.Stack {
     // Creates the s3 bucket where the website will be hosted
     const webBucket = new s3.Bucket(this, 's3-hosting', {
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
-      bucketName: "my-website-bucket",
+      bucketName: "my-website-bucket-24-07-2023",
       websiteIndexDocument: 'index.html',
       websiteErrorDocument: '404.html',
       removalPolicy: cdk.RemovalPolicy.DESTROY,
+      autoDeleteObjects: true,
     })
 
     const originAccessIdentity = new cloudfront.OriginAccessIdentity(this, 'cloudfront-oai', {
@@ -36,7 +37,7 @@ export class MyWebsite extends cdk.Stack {
       errorConfigurations: [
         {
           errorCode: 403,
-          responsePagePath: '/index.html',
+          responsePagePath: '/404.html',
           responseCode: 200,
         },
       ],
