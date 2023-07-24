@@ -15,7 +15,7 @@ export class web extends Construct {
 
         // Creates the s3 bucket where the website will be hosted
         const webBucket = new s3.Bucket(this, `${mainName}-hosting`, {
-            publicReadAccess: false,
+            blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
             bucketName: `${mainName}-bucket`,
             websiteIndexDocument: 'index.html',
             websiteErrorDocument: '404.html',
