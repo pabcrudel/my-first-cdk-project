@@ -1,7 +1,8 @@
 import * as cdk from 'aws-cdk-lib';
-import * as s3 from 'aws-cdk-lib/aws-s3'
-import * as s3deploy from 'aws-cdk-lib/aws-s3-deployment'
-import * as cloudfront from 'aws-cdk-lib/aws-cloudfront'
+import * as s3 from 'aws-cdk-lib/aws-s3';
+import * as s3deploy from 'aws-cdk-lib/aws-s3-deployment';
+import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
+import * as iam from 'aws-cdk-lib/aws-iam';
 import { Construct } from 'constructs';
 
 export class MyWebsite extends cdk.Stack {
@@ -22,6 +23,13 @@ export class MyWebsite extends cdk.Stack {
       comment: 'Allows CloudFront to reach the web bucket',
     })
 
+    // Add a bucket policy to allow read access from CloudFront
+    webBucket.addToResourcePolicy(new iam.PolicyStatement({
+      actions: ['s3:GetObject'],
+      resources: [webBucket.bucketArn + '/*'],
+      principals: [originAccessIdentity.grantPrincipal],
+    }));
+
     // Creates the cloudfront distribution that will be on top of the s3 bucket
     const webDistribution = new cloudfront.CloudFrontWebDistribution(this, 'cloudfront-distribution', {
       defaultRootObject: '/index.html',
@@ -32,13 +40,6 @@ export class MyWebsite extends cdk.Stack {
             originAccessIdentity: originAccessIdentity,
           },
           behaviors: [{ isDefaultBehavior: true }],
-        },
-      ],
-      errorConfigurations: [
-        {
-          errorCode: 403,
-          responsePagePath: '/404.html',
-          responseCode: 200,
         },
       ],
     })
