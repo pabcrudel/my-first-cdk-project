@@ -47,11 +47,9 @@ export class website extends Construct {
             ],
         })
 
-        /** This function deploys the built files from the frontend to the s3 hosting the website */
+        // This function deploys the built files from the frontend to the s3 hosting the website
         new s3deploy.BucketDeployment(this, `${mainName}-deploy`, {
-            sources: [
-                s3deploy.Source.asset('./www'),
-            ],
+            sources: [s3deploy.Source.asset('./www'),],
             prune: false,
             destinationBucket: webBucket,
             distribution: webDistribution,
