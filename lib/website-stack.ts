@@ -11,7 +11,8 @@ export class MyWebsite extends cdk.Stack {
 
     // Creates the s3 bucket where the website will be hosted
     const webBucket = new s3.Bucket(this, 's3-hosting', {
-      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+      publicReadAccess: false,
+      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ACLS,
       bucketName: "my-website-bucket-24-07-2023",
       websiteIndexDocument: 'index.html',
       websiteErrorDocument: '404.html',
