@@ -1,6 +1,6 @@
 import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
-import { website } from './constructs/s3-website-bucket';
+import { website } from './website-construct';
 
 // Project name
 const mainName = "my-first-cdk-project";
