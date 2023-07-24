@@ -7,7 +7,7 @@ import { Construct } from 'constructs';
 // Creates s3 Bucket
 
 // Project name
-const mainName = "my-project-website";
+const mainName = "my-first-cdk-project";
 
 export class web extends Construct {
     constructor(scope: Construct, id: string) {

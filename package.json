@@ -1,5 +1,5 @@
 {
-  "name": "my-project",
+  "name": "my-first-cdk-project",
   "version": "0.1.0",
   "bin": {
     "my-project": "bin/my-project.js"
