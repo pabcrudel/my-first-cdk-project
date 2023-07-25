@@ -5,6 +5,7 @@ import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
 import * as cloudfront_origins from 'aws-cdk-lib/aws-cloudfront-origins';
 // import * as iam from 'aws-cdk-lib/aws-iam';
 import { Construct } from 'constructs';
+import { Duration } from 'aws-cdk-lib';
 
 export class MyWebsite extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -22,9 +23,23 @@ export class MyWebsite extends cdk.Stack {
       websiteErrorDocument: '404.html',
     })
 
+    // Creates the cloudfront distribution
     const distribution = new cloudfront.Distribution(this, 'cloudfront-web-distribution', {
+      defaultRootObject: "index.html",
+      minimumProtocolVersion: cloudfront.SecurityPolicyProtocol.TLS_V1_2_2021,
+      errorResponses:[
+        {
+          httpStatus: 404,
+          responseHttpStatus: 404,
+          responsePagePath: '404.html',
+          ttl: Duration.minutes(30),
+        }
+      ],
       defaultBehavior: {
-        origin: new cloudfront_origins.S3Origin(webBucket) // This class automatically creates an Origin Access Identity
+        origin: new cloudfront_origins.S3Origin(webBucket), // This class automatically creates an Origin Access Identity
+        compress: true,
+        allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
+        viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
       },
     });
 
